@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+    <form action="/">
+        <button type="submit" class="btn buttonLink">Controlling Übersicht</button>
+    </form>
+    <h1>Mitarbeiter Optimierungsart</h1>
+
+
+    <!-- Input Jahr / Monat -->
+<div class="zeitraumAuswaehlen">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+</div>
+    <br>
+
+    <h2>SEO Typ</h2>
+    <table id="SeoHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col" data-toggle="tooltip" title="Name des Mitarbeiters">Techniker </th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Neukunden'">Neukunde</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Neue Homepage'">Neue Homepage</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Überschreibungen'">Überschreibung</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Keywordtausch'">KWT</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Teilweise Gut'">Teilweise Gut</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'All Good'">All Good</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erledigter 'Seo ausbauen'">SEO ausbauen</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for seo in SeoProTyp %}
+            <tr>
+                <td><a href="/detailansicht?mitarbeiter={{ seo.t_user_id }}">{{ seo.vorname }} {{ seo.name }}</a></td>
+                <td>{{ seo.Neukunde }}</td>
+                <td>{{ seo.NeueHomepage }}</td>
+                <td>{{ seo.Ueberschreibung }}</td>
+                <td>{{ seo.KWT }}</td>
+                <td>{{ seo.TeilweiseGut }}</td>
+                <td>{{ seo.AllGood }}</td>
+                <td>{{ seo.SeoAusbauen }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+
+    <h2>LP Typ</h2>
+    <table id="LpHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col" data-toggle="tooltip" title="Name des Mitarbeiters">Techniker </th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erstellter 'Zusatzseiten'">Zusatzseiten</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl erstellter 'Landingpage Templates'">Landingpage Template</th>
+            <th scope="col" data-toggle="tooltip" title="Anzahl aufgeschaltener 'Landingpages'">Landingpage aufschalten</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        {% for lp in LpProTyp %}
+            <tr>
+                <td><a href="/detailansicht?mitarbeiter={{ lp.t_user_id }}">{{ lp.vorname }} {{ lp.name }}</a></td>
+                <td>{{ lp.Zusatzseiten }}</td>
+                <td> {{ lp.LandingpageTemplate }}</td>
+                <td>{{ lp.LandingpageAufschalten }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <script>
+        $(document).ready( function () {
+            $('#LpHighscore').DataTable({
+                paging: false,
+                searching: false
+            })
+        } );
+
+        $(document).ready( function () {
+            $('#SeoHighscore').DataTable({
+                paging: false,
+                searching: false
+            })
+        } );
+    </script>
+{% endblock %}

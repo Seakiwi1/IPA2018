@@ -1,0 +1,68 @@
+table {
+    border: 1px solid grey;
+    width: 95%;
+}
+
+body {
+    padding: 15px;
+    max-width: 1100px;
+    font-family: Arial, Verdana, Helvetica, sans-serif;
+    font-size: 11px;
+}
+
+a, a:hover {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.buttonLink {
+    float: right;
+    height: 40px;
+    text-align: center;
+    padding-bottom: 5px;
+    margin-top: 15px;
+    }
+
+.highscore{
+    text-align: center;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px !important;
+}
+
+.inputZiele{
+    width: 100%;
+    overflow: hidden;
+    float:left;
+    display: inline-block;
+    padding: 5px !important;
+}
+
+.zeitraumAuswaehlen{
+    padding: 10px;
+    background-color: lightgrey;
+}
+
+
+body { margin: 0; padding: 15px; background-color: #FFFFFF; font-family: Arial, Verdana, Helvetica, sans-serif; }
+h1 { margin-top: 30px; padding: 0 0 5px 0; font-size: 18px; font-weight: bold; color: #003366; }
+h2 { margin: 0; padding: 0 0 4px 0; font-size: 16px; font-weight: bold; color: #000099; }
+h3 { text-align: right; margin: 0; padding: 0 0 3px 0; font-size: 14px; font-weight: bold; }
+h4 { margin: 0 4px 0 0; padding: 0 0 4px 0; font-size: 12px; font-weight: bold; color: #000000; text-align: right; }
+h5 { margin: 0; padding: 0 0 3px 0; font-size: 11px; font-weight: bold; color: #000000; text-align: right; }
+p { margin: 0; padding: 0 0 3px 0; font-size: 11px; font-weight: normal; color: #000000; }
+a { text-decoration: none; color: #000066; }
+a:hover { text-decoration: underline; }
+td { font-size: 11px; }
+
+select, input, textarea { font-family: Arial, Verdana, Helvetica, sans-serif; font-size: 11px; }
+
+.green{
+    color: green;
+}
+
+.red{
+    color: red;
+}

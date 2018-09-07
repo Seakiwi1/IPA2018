@@ -1,0 +1,177 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello User!{% endblock %}
+
+{% block body %}
+    <form action="/optimierungsarten">
+        <button type="submit" class="btn buttonLink">Optimierungsarten</button>
+    </form>
+<h1 xmlns="http://www.w3.org/1999/html">Mitarbeiter Controlling-Übersicht</h1>
+
+            <!-- Input Jahr / Monat -->
+    <div class="zeitraumAuswaehlen">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+    <br>
+
+
+    <h2>SEO Highscore</h2>
+    <form action="/" name="zielsetzungSeo" method="POST">
+        <div class="form-group highscore">
+            <div class="col-lg-2 inputZiele">
+        <select class="form-control" name="mitarbeiter" required>
+            <option value="" selected disabled hidden>Mitarbeiter</option>
+            {% for mitarbeiter in alleMitarbeiter %}
+            <option value="{{ mitarbeiter.id}}">{{ mitarbeiter.vorname }} {{ mitarbeiter.name }}</option>
+            {% endfor %}
+        </select>
+            </div>
+            <div class="col-lg-2 inputZiele">
+        <select class="form-control " name="jahr" required>
+            <option value="" selected disabled hidden>Jahr</option>
+            {% for jahr in zeitspanne %}
+                <option value="{{ jahr }}">{{ jahr }}</option>
+            {% endfor %}
+        </select>
+            </div>
+            <div class="col-lg-2 inputZiele">
+        <input class="form-control" name="ziel" required type="number" placeholder="0">
+            </div>
+        <div class="col-lg-2 inputZiele">
+        <button type="submit" name="submitZieleSeo" class="btn">Ziel festlegen</button>
+        </div>
+        </div>
+    </form>
+
+    <table id="SeoHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <th   scope="col" data-toggle="tooltip" title="Name des Mitarbeiters" >Techniker </th>
+            <th   scope="col" data-toggle="tooltip" title="Anzahl erledigter Seos während dem ausgewähltem Zeitraum">Ausgewählter Zeitraum</th>
+            <th   scope="col" data-toggle="tooltip" title="Jahresziel / 12" >Monatsziel </th>
+            <th   scope="col" data-toggle="tooltip" title="Jahresziel für ausgewählten Zeitraum" >Jahresziel</th>
+            <th   scope="col" data-toggle="tooltip" title="Differenz Ausgewählter Zeitraum zu Monatsziel" >Differenz zum Monatsziel </th>
+            <th   scope="col" data-toggle="tooltip" title="Differenz Ausgewählter Zeitraum zu Jahresziel" >Differenz zum Jahresziel</th>
+            <th   scope="col" data-toggle="tooltip" title="Ausgwählter Zeitraum prozentual im Vergleich zu Jahresziel">Jahresziel erreicht in %</th>
+        </tr>
+        </thead>
+        <tbody>
+
+            {% for seo in alleSeos %}
+            <tr>
+                <td><a href="/detailansicht?mitarbeiter={{ seo.id }}">{{ seo.vorname }} {{ seo.name }}</a></td>
+                <td>{{ seo.anzahlOptimierung}}</td>
+                {% if seo.anzahlOptimierung >= (seo.ziel/12)  %}
+                <td class="green">{{ (seo.ziel / 12)|round}}</td>
+                {% elseif  seo.anzahlOptimierung < (seo.ziel / 12)|round %}
+                <td class="red"> {{ (seo.ziel / 12)|round }}</td>
+                {% else %}
+                <td>{{ (seo.ziel / 12)|round }}</td>
+                {% endif %}
+
+                {% if seo.anzahlOptimierung >= seo.ziel  %}
+                    <td class="green">{{ seo.ziel }}</td>
+                {% elseif  seo.anzahlOptimierung < seo.ziel %}
+                    <td class="red">{{ seo.ziel }}</td>
+                {% else %}
+                    <td>{{ (seo.ziel)}}</td>
+                {% endif %}
+                <td>{{ (seo.ziel / 12 - seo.anzahlOptimierung)|round }} / {{ (seo.ziel - seo.anzahlOptimierung)|round }}</td>
+                <td>{{ (100 / seo.ziel * seo.anzahlOptimierung)|round}}% </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <br>
+
+    <h2>LP Highscore</h2>
+
+    <form action="/" name="zielsetzungLp" method="POST">
+        <div class="form-group highscore">
+            <div class="col-lg-2 inputZiele">
+                <select class="form-control" name="mitarbeiter" required>
+                    <option value="" selected disabled hidden>Mitarbeiter</option>
+                    {% for mitarbeiter in alleMitarbeiter %}
+                        <option value="{{ mitarbeiter.id}}">{{ mitarbeiter.vorname }} {{ mitarbeiter.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-2 inputZiele">
+                <select class="form-control " name="jahr" required>
+                    <option value="" selected disabled hidden>Jahr</option>
+                    {% for jahr in zeitspanne %}
+                        <option value="{{ jahr }}">{{ jahr }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-lg-2 inputZiele">
+                <input class="form-control" name="ziel" required type="number" placeholder="0">
+            </div>
+            <div class="col-lg-2 inputZiele">
+                <button type="submit" name="submitZieleLp" class="btn">Ziel festlegen</button>
+            </div>
+        </div>
+    </form>
+
+    <table id="LpHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <th   scope="col" data-toggle="tooltip" title="Name des Mitarbeiters" >Techniker </th>
+            <th   scope="col" data-toggle="tooltip" title="Anzahl erledigter Lp während dem ausgewähltem Zeitraum">Ausgewählter Zeitraum</th>
+            <th   scope="col" data-toggle="tooltip" title="Jahresziel / 12" >Monatsziel </th>
+            <th   scope="col" data-toggle="tooltip" title="Jahresziel für ausgewählten Zeitraum" >Jahresziel</th>
+            <th   scope="col" data-toggle="tooltip" title="Differenz Ausgewählter Zeitraum zu Monatsziel" >Differenz zum Monatsziel </th>
+            <th   scope="col" data-toggle="tooltip" title="Differenz Ausgewählter Zeitraum zu Jahresziel" >Differenz zum Jahresziel</th>
+            <th   scope="col" data-toggle="tooltip" title="Ausgwählter Zeitraum prozentual im Vergleich zu Jahresziel">Jahresziel erreicht in %</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for lp in alleLp %}
+            <tr>
+                <td><a href="/detailansicht?mitarbeiter={{ lp.id }}">{{ lp.vorname }} {{ lp.name }}</a></td>
+                <td>{{ lp.anzahlLp}}</td>
+                {% if lp.anzahlLp >= (lp.ziel/12)|round  %}
+                    <td class="green">{{ (lp.ziel / 12)|round }}</td>
+                {% elseif  lp.anzahlLp < lp.ziel %}
+                    <td class="red"> {{ (lp.ziel / 12)|round }}</td>
+                {% else %}
+                    <td>{{ (lp.ziel / 12)|round }}</td>
+                {% endif %}
+
+                {% if lp.anzahlLp >= lp.ziel  %}
+                    <td class="green">{{ lp.ziel }}</td>
+                {% elseif  lp.anzahlLp < lp.ziel %}
+                    <td class="red">{{ lp.ziel }}</td>
+                {% else %}
+                    <td>{{ (lp.ziel)}}</td>
+                {% endif %}
+                <td>{{ (lp.ziel / 12 - lp.anzahlLp)|round }}</td>
+                <td>{{ (lp.ziel - lp.anzahlLp)|round }}</td>
+                <td>{{ (100 / lp.ziel * lp.anzahlLp)|round }}%</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready( function () {
+            $('#LpHighscore').DataTable({
+                paging: false,
+                searching: false
+            })
+        } );
+
+        $(document).ready( function () {
+            $('#SeoHighscore').DataTable({
+                paging: false,
+                searching: false
+            })
+        } );
+    </script>
+{% endblock %}

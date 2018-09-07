@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Detailübersicht{% endblock %}
+
+{% block body %}
+    <form action="/">
+        <button type="submit" class="btn buttonLink">Controlling Übersicht</button>
+    </form>
+    {% for Mitarbeiter in ausgewaehlterMitarbeiter %}
+        <h1>{{ Mitarbeiter.vorname }} {{ Mitarbeiter.name }}</h1>
+    {% endfor %}
+
+    <!-- Input Jahr / Monat -->
+    <div class="zeitraumAuswaehlen">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+    <br>
+
+
+    <table id="SeoHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <td data-toggle="tooltip" title="Erledigte Seos im ausgewählten Zeitraum">Insgesamt</td>
+            <td data-toggle="tooltip" title="Erledigte 'All Good' im ausgewählten Zeitraum">Allgood</td>
+            <td data-toggle="tooltip" title="Erledigte 'KWT' im ausgewählten Zeitraum">Keywords austauschen</td>
+            <td data-toggle="tooltip" title="Erledigte 'Neue Homepage' im ausgewählten Zeitraum">Neue Homepage</td>
+            <td data-toggle="tooltip" title="Erledigte 'Neukunden' im ausgewählten Zeitraum">Neukunde</td>
+            <td data-toggle="tooltip" title="Erledigte 'Seo ausbauen' im ausgewählten Zeitraum">SEO ausbauen</td>
+            <td data-toggle="tooltip" title="Erledigte 'Teilweise Gut' im ausgewählten Zeitraum">Teilweise Gut</td>
+            <td data-toggle="tooltip" title="Erledigte 'Überschreibungen' im ausgewählten Zeitraum">Überschreibung</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ SeoProMitarbeiter }}</td>
+            <td>{{ AllGoodProMitarbeiter }}</td>
+            <td>{{ KwtProMitarbeiter }}</td>
+            <td>{{ NeueHomepageProMitarbeiter }}</td>
+            <td>{{ NeukundeProMitarbeiter }}</td>
+            <td>{{ SeoAusbauenProMitarbeiter }}</td>
+            <td>{{ TeilweiseGutProMitarbeiter }}</td>
+            <td>{{ UeberschreibungProMitarbeiter }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table id="SeoHighscore" class="table table-striped">
+        <thead>
+        <tr>
+            <td data-toggle="tooltip" title="Erledigte Zusatzseiten / Landingpages im ausgewählten Zeitraum">Insgesamt</td>
+            <td data-toggle="tooltip" title="Erstellte 'Zusatzseiten' im ausgewählten Zeitraum">Zusatzseiten</td>
+            <td data-toggle="tooltip" title="Erstellte 'Landingpage Templates' im ausgewählten Zeitraum">Landingpage Template</td>
+            <td data-toggle="tooltip" title="Aufgeschaltene Landingpages im ausgewählten Zeitraum">Landingpage aufschalten</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ ZsProMitarbeiter }}</td>
+            <td>{{ ZusatzseitenProMitarbeiter }}</td>
+            <td>{{ LpTemplateProMitarbeiter }}</td>
+            <td>{{ LpAufgeschaltetProMitarbeiter }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <canvas id="seoChart" width="400" height="100"></canvas>
+    <canvas id="lpChart" width="400" height="100"></canvas>
+
+    <script>
+        var jahr = document.getElementById("seo_jahr").value;
+        var monat = document.getElementById("seo_monat").value;
+        var columngraph = $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/detailansicht/mitarbeiter/' + jahr + '/' + monat,
+            async: true,
+            contentType: 'application/json'
+        }).done(function (results) {
+            var SeoChart = document.getElementById("seoChart");
+            var seoChart = new Chart(SeoChart, {
+                type: 'bar',
+                data: {
+                    labels: columngraph.responseJSON[1],
+                    datasets: [{
+                        label: 'Anzahl Seos',
+                        data: columngraph.responseJSON[0],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(200, 30, 200, 0.2)',
+                            'rgba(255, 250, 150, 0.2)',
+                            'rgba(200, 99, 132, 0.2)',
+                            'rgba(50, 30, 200, 0.2)',
+                            'rgba(150, 200, 32, 0.2)',
+                            'rgba(110, 110, 132, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+            var landingpageChart = document.getElementById("lpChart");
+            var lpChart = new Chart(landingpageChart, {
+                type: 'bar',
+                data: {
+                    labels: columngraph.responseJSON[1],
+                    datasets: [{
+                        label: 'Anzahl Zusatzseiten + Landingpages',
+                        data: columngraph.responseJSON[2],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(200, 30, 200, 0.2)',
+                            'rgba(255, 250, 150, 0.2)',
+                            'rgba(200, 99, 132, 0.2)',
+                            'rgba(50, 30, 200, 0.2)',
+                            'rgba(150, 200, 32, 0.2)',
+                            'rgba(110, 110, 132, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(110, 110, 132, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
+        })
+
+
+    </script>
+{% endblock %}
